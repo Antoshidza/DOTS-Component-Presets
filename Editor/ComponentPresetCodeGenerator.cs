@@ -19,8 +19,8 @@ namespace ComponentPresets
             IBufferElementData
         }
 
-        //private const string GeneratedFilePath = "Assets/ComponentCollection.cs";
-        private const string TemplateFilePath = "Packages/DOTS Component Presets/Editor/ScriptTemplates/ComponentPresetCodegenTemplate.txt";
+        private const string InsidePackageTemplateFilePath = "/Editor/ScriptTemplates/ComponentPresetCodegenTemplate.txt";
+        private const string PackageFolderPartitialName = "com.tonymax.dots-component-presets";
         private const string AddToActionsLineTemplate = "_addComponentActions[<#index#>] = <#item#>;";
         private const string DeclareActionTemplate = "(Entity entity, EntityManager entityManager) => {<#action logic#>}";
         private const string AddComponentDataTemplate = "entityManager.AddComponentData(entity, <#component#>);";
@@ -71,7 +71,7 @@ namespace ComponentPresets
         }
         private void Generate()
         {
-            var componentAggregatorTemplateText = File.ReadAllText(TemplateFilePath);
+            var componentAggregatorTemplateText = File.ReadAllText(GetTemplatePath());
             var resultString = string.Empty;
             for(int i = 0; i < componentPresets.Length; i++)
                 resultString += "\n" + GetComponentPresetAddString(componentPresets[i], i, offset: 3);
@@ -85,6 +85,18 @@ namespace ComponentPresets
 
             File.WriteAllText(_currentGeneratedFilePath + "/ComponentCollection.cs", result);
             AssetDatabase.Refresh();
+        }
+        private string GetTemplatePath()
+        {
+            var packagesDirectoryInfo = new DirectoryInfo("Packages");
+            var filesAndDirs = packagesDirectoryInfo.GetFileSystemInfos("*" + PackageFolderPartitialName + "*");
+
+            if(filesAndDirs.Length == 0)
+                throw new Exception("Can't find folder of DOTS Component Presets package");
+            if(filesAndDirs.Length > 1)
+                throw new Exception($"There must be only one package with name like {PackageFolderPartitialName}");
+
+            return filesAndDirs[0].FullName + InsidePackageTemplateFilePath;
         }
         private string GetComponentPresetAddString(ComponentPreset preset, int index, int offset = 0)
         {
