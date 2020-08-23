@@ -88,7 +88,7 @@ namespace ComponentPresets
         }
         private string GetTemplatePath()
         {
-            var packagesDirectoryInfo = new DirectoryInfo("Packages");
+            var packagesDirectoryInfo = new DirectoryInfo("Library/PackageCache");
             var filesAndDirs = packagesDirectoryInfo.GetFileSystemInfos("*" + PackageFolderPartitialName + "*");
 
             if(filesAndDirs.Length == 0)
