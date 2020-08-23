@@ -1,0 +1,20 @@
+{
+    "name": "com.tonymax.dots-component-presets.editor",
+    "references": [
+        "GUID:979af297f9f3fb74fa83e60f79df8c95",
+        "GUID:734d92eba21c94caba915361bd5ac177",
+        "GUID:d8b63aba1907145bea998dd612889d6b",
+        "GUID:a5baed0c9693541a5bd947d336ec7659"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

@@ -1,0 +1,24 @@
+﻿//This file is generated so don't change it manually.
+using System;
+using UnityEngine;
+using Unity.Entities;
+<#using#>
+namespace ComponentPresets
+{
+	public enum PresetType
+	{
+<#enum#>
+	}
+    public static class ComponentCollection
+    {
+		private static Action<Entity, EntityManager>[] _addComponentActions;
+
+		[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
+		private static void Initialize()
+		{
+			_addComponentActions = new Action<Entity, EntityManager>[<#preset types count#>];<#add component logic#>
+		}
+        public static void AddComponents(Entity entity, EntityManager entityManager, PresetType presetType)
+			=> _addComponentActions[(int)presetType].Invoke(entity, entityManager);
+    }
+}
