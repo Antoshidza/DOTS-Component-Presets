@@ -1,6 +1,6 @@
 {
   "name": "com.tonymax.dots-component-presets",
-  "version": "0.1.1",
+  "version": "1.0.0",
   "displayName": "DOTS Component presets",
   "description": "Workflow to create component preset assets and then generate logic for adding components at runtime. This package solves a problem that you can't add collection of components with values without knowing types.",
   "unity": "2020.1",

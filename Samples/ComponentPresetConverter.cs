@@ -1,17 +1,14 @@
-﻿using System;
+﻿using ComponentPresets;
 using Unity.Entities;
 using UnityEngine;
 
-namespace ComponentPresets
+public class ComponentPresetConverter : MonoBehaviour, IConvertGameObjectToEntity
 {
-    public class ComponentPresetConverter : MonoBehaviour, IConvertGameObjectToEntity
-    {
-        [SerializeField]
-        private string _componentPresetName;
+    [SerializeField]
+    private PresetType _presetType;
 
-        public virtual void Convert(Entity entity, EntityManager dstManager, GameObjectConversionSystem conversionSystem)
-        {
-            ComponentCollection.AddComponents(entity, dstManager, (PresetType)Enum.Parse(typeof(PresetType), _componentPresetName));
-        }
+    public void Convert(Entity entity, EntityManager dstManager, GameObjectConversionSystem conversionSystem)
+    {
+        ComponentCollection.AddComponents(entity, dstManager, _presetType);
     }
 }

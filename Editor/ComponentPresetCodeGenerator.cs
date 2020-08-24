@@ -21,7 +21,7 @@ namespace ComponentPresets
 
         private const string InsidePackageTemplateFilePath = "/Editor/ScriptTemplates/ComponentPresetCodegenTemplate.txt";
         private const string PackageFolderPartitialName = "com.tonymax.dots-component-presets";
-        private const string AddToActionsLineTemplate = "_addComponentActions[<#index#>] = <#item#>;";
+        private const string AddToActionsLineTemplate = "_addComponentActions.Add(<#index#>, <#item#>);";
         private const string DeclareActionTemplate = "(Entity entity, EntityManager entityManager) => {<#action logic#>}";
         private const string AddComponentDataTemplate = "entityManager.AddComponentData(entity, <#component#>);";
         private const string AddBufferTemplate = "var <#buffer#>Buffer = entityManager.AddBuffer<<#component#>>(entity);";
@@ -74,7 +74,7 @@ namespace ComponentPresets
             var componentAggregatorTemplateText = File.ReadAllText(GetTemplatePath());
             var resultString = string.Empty;
             for(int i = 0; i < componentPresets.Length; i++)
-                resultString += "\n" + GetComponentPresetAddString(componentPresets[i], i, offset: 3);
+                resultString += "\n" + GetComponentPresetAddString(componentPresets[i], componentPresets[i].name.GetHashCode(), offset: 3);
             var result = componentAggregatorTemplateText.
                 Replace("using".GetMark(), string.Empty).
                 Replace("enum".GetMark(), GetEnumLines(offset: 2)).
@@ -218,7 +218,8 @@ namespace ComponentPresets
             var result = string.Empty;
             for(int i = 0; i < componentPresets.Length; i++)
             {
-                var enumLine = componentPresets[i].name + (i < componentPresets.Length - 1 ? ",\n" : string.Empty);
+                var assetName = componentPresets[i].name;
+                var enumLine = assetName + " = " + assetName.GetHashCode() + (i < componentPresets.Length - 1 ? ",\n" : string.Empty);
                 result += enumLine.WithOffset(offset);
             }
             return result;

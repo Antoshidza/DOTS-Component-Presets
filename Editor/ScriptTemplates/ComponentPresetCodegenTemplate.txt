@@ -2,6 +2,7 @@
 using System;
 using UnityEngine;
 using Unity.Entities;
+using System.Collections.Generic;
 <#using#>
 namespace ComponentPresets
 {
@@ -11,14 +12,19 @@ namespace ComponentPresets
 	}
     public static class ComponentCollection
     {
-		private static Action<Entity, EntityManager>[] _addComponentActions;
+		private static Dictionary<int, Action<Entity, EntityManager>> _addComponentActions;
 
 		[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
 		private static void Initialize()
 		{
-			_addComponentActions = new Action<Entity, EntityManager>[<#preset types count#>];<#add component logic#>
+			_addComponentActions = new Dictionary<int, Action<Entity, EntityManager>>(<#preset types count#>);<#add component logic#>
 		}
         public static void AddComponents(Entity entity, EntityManager entityManager, PresetType presetType)
-			=> _addComponentActions[(int)presetType].Invoke(entity, entityManager);
+        {
+			if(_addComponentActions.TryGetValue((int)presetType, out var addComponentDelegate))
+				addComponentDelegate.Invoke(entity, entityManager);
+			else
+				throw new Exception($"There is no key {presetType} ({(int)presetType}) in dictionary");
+        }
     }
 }
