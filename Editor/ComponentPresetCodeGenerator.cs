@@ -91,6 +91,13 @@ namespace ComponentPresets
             var packagesDirectoryInfo = new DirectoryInfo("Library/PackageCache");
             var filesAndDirs = packagesDirectoryInfo.GetFileSystemInfos("*" + PackageFolderPartitialName + "*");
 
+            //Try to access to another directory in case when we are inside source project
+            if(filesAndDirs.Length == 0)
+            {
+                packagesDirectoryInfo = new DirectoryInfo("Packages");
+                filesAndDirs = packagesDirectoryInfo.GetFileSystemInfos("*" + PackageFolderPartitialName + "*");
+            }
+
             if(filesAndDirs.Length == 0)
                 throw new Exception("Can't find folder of DOTS Component Presets package");
             if(filesAndDirs.Length > 1)
